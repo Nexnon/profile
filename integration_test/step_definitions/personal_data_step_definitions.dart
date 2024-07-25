@@ -5,6 +5,8 @@ import 'package:surf_flutter_test/surf_flutter_test.dart';
 
 import '../test_screen_library.dart';
 
+/// Добавил мапу со значениями для тестирования приложения
+/// Если нужно использовать другой датасет, то менять значения нужно только в одном месте
 final Map<String, String> personalData = {
   'surname': 'Gosling',
   'name': 'Ryan',
@@ -57,6 +59,49 @@ final personalDataStepDefinitions = [
         (context, tester) async {
       final dateOfBirth = tester.widget<TextFormField>(personalDataTestScreen.dateOfBirthField);
       expect(dateOfBirth.initialValue, personalData['birthday']);
+    },
+  ),
+  testerWhen<FlutterWidgetTesterWorld>(
+    RegExp(r'Я удаляю имя$'),
+        (context, tester) async {
+      final name = tester.widget<TextFormField>(personalDataTestScreen.nameField);
+      name.controller?.text = '';
+    },
+  ),
+  testerWhen<FlutterWidgetTesterWorld>(
+    RegExp(r'Я удаляю отчество$'),
+        (context, tester) async {
+      final secondName = tester.widget<TextFormField>(personalDataTestScreen.secondName);
+      secondName.controller?.text = '';
+    },
+  ),
+  testerWhen<FlutterWidgetTesterWorld>(
+    RegExp(r'Я удаляю дату рождения$'),
+        (context, tester) async {
+      final calendar =
+      tester.widget<TextFormField>(personalDataTestScreen.dateOfBirthField);
+      calendar.controller?.text = '';
+    },
+  ),
+  testerThen<FlutterWidgetTesterWorld>(
+    RegExp(r'Я вижу пустое поле фамилии$'),
+        (context, tester) async {
+      await tester.pumpUntilVisible(personalDataTestScreen.surnameError);
+      expect(personalDataTestScreen.surnameError, findsOneWidget);
+    },
+  ),
+  testerThen<FlutterWidgetTesterWorld>(
+    RegExp(r'Я вижу пустое поле имени$'),
+        (context, tester) async {
+      await tester.pumpUntilVisible(personalDataTestScreen.nameError);
+      expect(personalDataTestScreen.nameError, findsOneWidget);
+    },
+  ),
+  testerThen<FlutterWidgetTesterWorld>(
+    RegExp(r'Я вижу пустое поле даты рождения$'),
+        (context, tester) async {
+      await tester.pumpUntilVisible(personalDataTestScreen.dateOfBirthError);
+      expect(personalDataTestScreen.dateOfBirthError, findsOneWidget);
     },
   ),
 ];

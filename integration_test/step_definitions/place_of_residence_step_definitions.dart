@@ -5,6 +5,8 @@ import 'package:surf_flutter_test/surf_flutter_test.dart';
 
 import '../test_screen_library.dart';
 
+/// Добавил мапу со значениями для тестирования приложения
+/// Если нужно использовать другой датасет, то менять значения нужно только в одном месте
 final Map<String, String> residenceData = {
   'city': 'Voronezh',
 };
